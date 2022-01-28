@@ -18,17 +18,14 @@ import com.geekbrains.weather.viewmodel.AppState
 import com.geekbrains.weather.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
-
-    companion
-    object {
+    // фабричный статический метод
+    companion object {
         fun newInstance() = MainFragment()
     }
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
-
-    private var isRussian = true
 
 
     // lazy инициирует viewModel когда это будет необходимо (при первом вызове)
@@ -47,11 +44,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // для работы RecycleView нужен адаптер, RecycleView и layoutManager
+        //TODO 3 урок 01:57:00
         binding.mainRecycleView.adapter = adapter
-
         binding.mainRecycleView.layoutManager = LinearLayoutManager(requireActivity())
 
-
+        // реакция на нажатие с получением объекта weather
         adapter.listener = MainAdapter.OnItemClick { weather ->
 
             // apply сразу производит операцию над объектом
@@ -66,32 +64,37 @@ class MainFragment : Fragment() {
             }
         }
 
-        // подписались на изменения live data
+        // подписались на изменения live data (передаём жизненный цикл viewLifecycleOwner и Observer )
+        // то есть когда данные изменяться вызываем перерисовку (render(state))
         viewModel.getData().observe(viewLifecycleOwner, { state -> render(state) })
 
         //запросили новые данные
         viewModel.getWeatherFromLocalStorageRus()
 
+        // пока не очень красиво должно быть просто getWeatherFromLocalStorage
+        // а VM должна хранить в себе значение языка 3 урок 02:45
         binding.mainFAB.setOnClickListener {
-            isRussian = !isRussian
-            when {
-                isRussian -> {
-                    viewModel.getWeatherFromLocalStorageRus()
-                    binding.mainFAB.setImageResource(R.drawable.ic_russia)
-                }
-                else -> {
-                    viewModel.getWeatherFromLocalStorageWorld()
-                    binding.mainFAB.setImageResource(R.drawable.ic_baseline_outlined_flag_24)
+            with(viewModel) {
+                getWeatherFromRemoteSource()
+                isRussian = !isRussian
+                when {
+                    isRussian -> {
+                        binding.mainFAB.setImageResource(R.drawable.ic_russia)
+                    }
+                    else -> {
+                        binding.mainFAB.setImageResource(R.drawable.ic_baseline_outlined_flag_24)
+                    }
                 }
             }
         }
     }
 
 
+    //метод реализует реакцию на различные состояния
     private fun render(state: AppState) {
-
         when (state) {
             is AppState.Success<*> -> {
+                // показываем список
                 val weather: List<Weather> = state.data as List<Weather>
                 adapter.setWeather(weather)
                 binding.loadingContainer.hide()
@@ -99,7 +102,7 @@ class MainFragment : Fragment() {
             is AppState.Error -> {
                 binding.loadingContainer.show()
                 binding.root.showSnackBar(state.error.message.toString(), "Попробовать снова", {
-                    //запросили новые данные
+                    //запросили новые данные (список городов)
                     viewModel.getWeatherFromLocalStorageRus()
                 })
             }
