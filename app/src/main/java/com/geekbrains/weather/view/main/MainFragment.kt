@@ -1,19 +1,20 @@
 package com.geekbrains.weather.view.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import androidx.annotation.MainThread
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.geekbrains.weather.R
-import com.geekbrains.weather.databinding.MainFragmentBinding
+import com.geekbrains.weather.databinding.FragmentMainBinding
 import com.geekbrains.weather.model.Weather
+import com.geekbrains.weather.view.*
 import com.geekbrains.weather.view.details.DetailFragment
-import com.geekbrains.weather.view.hide
-import com.geekbrains.weather.view.show
-import com.geekbrains.weather.view.showSnackBar
 import com.geekbrains.weather.viewmodel.AppState
 import com.geekbrains.weather.viewmodel.MainViewModel
 
@@ -21,9 +22,10 @@ class MainFragment : Fragment() {
     // фабричный статический метод
     companion object {
         fun newInstance() = MainFragment()
+        const val TAG = "!!! MainFragment"
     }
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
 
@@ -37,15 +39,23 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, " onCreate")
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, " onViewCreated")
+        initToolbar()
 
         // для работы RecycleView нужен адаптер, RecycleView и layoutManager
-        //TODO 3 урок 01:57:00
         binding.mainRecycleView.adapter = adapter
         binding.mainRecycleView.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -89,6 +99,47 @@ class MainFragment : Fragment() {
         }
     }
 
+    /*** Чтобы наш активити узнал о существовании меню.
+     * Создание меню.
+     * Инфлейтор заходит в notes_list_menu, пройдётся по ней
+     * и для каждой создаст пункт меню и добавит в menu
+     * @param menu
+     * @param inflater
+     * @return
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d(TAG, " onCreateOptionsMenu  $menu")
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    /*** Инициализация Toolbar
+     *
+     */
+    private fun initToolbar() {
+        Log.d(TAG, " initToolbar made")
+        val toolbar: Toolbar = requireView().findViewById(R.id.toolbar)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+    }
+
+    /***Реакция на нажатие кнопки меню.
+     * У нас есть элемент на который нажали. Проверяем тот ли это элемент.
+     * И выполняем openNoteScreen.
+     * @param item
+     * @return
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_settings) {
+            requireContext().startActivity(Intent(requireContext(), SettingsActivity::class.java))
+            return true
+        } else if (item.itemId == R.id.action_history) {
+            requireContext().startActivity(Intent(requireContext(), HistoryActivity::class.java))
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     //метод реализует реакцию на различные состояния
     private fun render(state: AppState) {
