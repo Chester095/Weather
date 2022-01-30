@@ -6,21 +6,33 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.widget.TextView
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.geekbrains.weather.R
+import com.geekbrains.weather.model.Contact
 
 
-class ContactsActivity : AppCompatActivity() {
+class ContactsActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contacts)
-        supportActionBar!!.title = "Контакты"
+        setContentView(R.layout.activity_contacts2)
+        supportActionBar!!.title = "Контакты 2"
         checkPermission()
+
+/*        findViewById<RecyclerView>(R.id.contact_recycle_view).apply {
+            Log.d("!!! ContactsActivity2", " findViewById")
+            // получаем данные из нашей БД
+            Thread {
+                adapter = ContactsAdapter(LocalRepositoryImpl(App.getHistoryDao()).getAllHistory()).also {
+                    it.notifyDataSetChanged()
+                }
+            }.start()
+        }*/
+
     }
 
     private val permissionResult =
@@ -54,7 +66,8 @@ class ContactsActivity : AppCompatActivity() {
     private fun getContacts() {
         //объект через который будем общаться с контент провайдером
         val contentResolver: ContentResolver = contentResolver
-        val contactsList = findViewById<TextView>(R.id.contacts_list).apply { text = "" }
+        //TODO какой-то сбой в обращении к Layout
+//        val contactsList = findViewById<TextView>(R.id.contacts_list).apply { text = "" }
         // через него получаем курсор. Курсор нужен для получения данных по объектно и не всех сразу.
         val projection = arrayOf(
             ContactsContract.Contacts._ID,
@@ -74,7 +87,7 @@ class ContactsActivity : AppCompatActivity() {
 
 
         cursor?.let { cursor ->
-             val columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+            val columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
 
             if (columnIndex >= 0) {
                 for (i in 0..cursor.count) {
@@ -82,7 +95,9 @@ class ContactsActivity : AppCompatActivity() {
                         val phoneNumber: String = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         val id: String = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID))
                         val name = cursor.getString(columnIndex)
-                        contactsList.text = "${contactsList.text}$name  $phoneNumber\n"
+                        Contact(id, name, phoneNumber)
+                        Log.d("!!! ContactsActivity2", " columnIndex  id = $id  name = $name  number = $phoneNumber")
+//                        contactsList.text = "${contactsList.text}$name  $phoneNumber\n"
                     }
                 }
             }

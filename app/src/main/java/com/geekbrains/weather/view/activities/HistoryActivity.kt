@@ -27,8 +27,6 @@ class HistoryActivity : AppCompatActivity() {
                     it.notifyDataSetChanged()
                 }
             }.start()
-
         }
-        Log.d("!!! HistoryActivity", " adapter")
     }
 }

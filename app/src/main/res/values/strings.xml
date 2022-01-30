@@ -26,5 +26,6 @@
     <string name="popup_menu_item_edit">Заполнить файл тестовыми данными</string>
     <string name="action_history">История запросов</string>
     <string name="action_contacts">Контакты</string>
+    <string name="action_contacts2">Контакты 2</string>
 
 </resources>

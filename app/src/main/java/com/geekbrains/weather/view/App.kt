@@ -3,6 +3,8 @@ package com.geekbrains.weather.view
 import android.app.Application
 import android.util.Log
 import androidx.room.Room
+import com.geekbrains.weather.model.ContactsDAO
+import com.geekbrains.weather.model.ContactsDB
 import com.geekbrains.weather.model.HistoryDAO
 import com.geekbrains.weather.model.HistoryDB
 
@@ -21,19 +23,20 @@ class App : Application() {
         private var appInstance: App? = null
 
         // сама БД
-        private var db: HistoryDB? = null
+        private var historyDB: HistoryDB? = null
+//        private var contactsDB: ContactsDB? = null
 
         // название нашей БД
         private const val DB_NAME = "History.db"
 
-        // инициализация БД
+        // инициализация БД истории запросов
         fun getHistoryDao(): HistoryDAO {
-            if (db == null) {
+            if (historyDB == null) {
                 Log.d(TAG, "History.db  db != null")
                 synchronized(HistoryDB::class.java) {
-                    if (db == null) {
+                    if (historyDB == null) {
                         appInstance?.let { app ->
-                            db = Room.databaseBuilder(
+                            historyDB = Room.databaseBuilder(
                                 app.applicationContext,
                                 HistoryDB::class.java,
                                 DB_NAME
@@ -42,8 +45,27 @@ class App : Application() {
                     }
                 }
             }
-            return db!!.historyDAO()
+            return historyDB!!.historyDAO()
         }
+
+/*        // инициализация БД телефонов
+        fun getContactsDao(): ContactsDAO {
+            if (contactsDB == null) {
+                Log.d(TAG, "History.db  db != null")
+                synchronized(HistoryDB::class.java) {
+                    if (contactsDB == null) {
+                        appInstance?.let { app ->
+                            contactsDB = Room.databaseBuilder(
+                                app.applicationContext,
+                                ContactsDB::class.java,
+                                DB_NAME
+                            ).build()
+                        } ?: throw Exception("Что-то пошло не так")
+                    }
+                }
+            }
+            return contactsDB!!.contactsDAO()
+        }*/
 
     }
 

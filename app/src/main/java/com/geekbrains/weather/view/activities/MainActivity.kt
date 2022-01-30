@@ -84,20 +84,12 @@ class MainActivity : AppCompatActivity() {
         } else if (item.itemId == R.id.action_contacts) {
             startActivity(Intent(this, ContactsActivity::class.java))
             return true
+        } else if (item.itemId == R.id.action_contacts2) {
+            startActivity(Intent(this, ContactsActivity2::class.java))
+            return true
         }
-
         return super.onOptionsItemSelected(item)
     }
-/*    *//*** Инициализация Toolbar
-     *
-     *//*
-    private fun initToolbar() {
-        Log.d(MainFragment.TAG, " initToolbar made")
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-    }*/
-
-
 
 
     override fun onDestroy() {

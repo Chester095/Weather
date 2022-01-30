@@ -17,6 +17,9 @@
             android:name=".view.activities.ContactsActivity"
             android:exported="false" />
         <activity
+            android:name=".view.activities.ContactsActivity2"
+            android:exported="false" />
+        <activity
             android:name=".view.activities.HistoryActivity"
             android:exported="false" />
         <activity
