@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.geekbrains.weather.R
 import com.geekbrains.weather.databinding.ActivityMainBinding
 import com.geekbrains.weather.model.MainBroadcastReceiver

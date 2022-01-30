@@ -12,50 +12,57 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.geekbrains.weather.R
 import com.geekbrains.weather.model.Contact
+import com.geekbrains.weather.model.ContactsAdapter
 
 
 class ContactsActivity2 : AppCompatActivity() {
+    companion object {
+        private var contact = mutableListOf<Contact>()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts2)
         supportActionBar!!.title = "Контакты 2"
         checkPermission()
 
-/*        findViewById<RecyclerView>(R.id.contact_recycle_view).apply {
-            Log.d("!!! ContactsActivity2", " findViewById")
-            // получаем данные из нашей БД
-            Thread {
-                adapter = ContactsAdapter(LocalRepositoryImpl(App.getHistoryDao()).getAllHistory()).also {
-                    it.notifyDataSetChanged()
-                }
-            }.start()
-        }*/
-
+        contact.add(Contact("25", "Басиков АИ", "+79164445544"))
     }
 
-    private val permissionResult =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            // описываем сценарии
-            when {
-                // разрешения выданы
-                result -> getContacts()
-                !ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.READ_CONTACTS
-                ) -> {
-                    // диалог запроса разрешения
-                    AlertDialog.Builder(this).setTitle("Дай доступ")
-                        .setMessage("очень нада")
-                        .setPositiveButton("Дать доступ") { _, _ -> checkPermission() }
-                        .setNegativeButton("Не давать") { dialog, _ -> dialog.dismiss() }
-                        .create()
-                        .show()
+    private val permissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission())
+    { result ->
+        // описываем сценарии
+        when {
+            // разрешения выданы
+            result -> {
+                getContacts()
+                findViewById<RecyclerView>(R.id.contact_recycle_view).apply {
+                    // выводим данные
+                    adapter = ContactsAdapter(contact).also {
+                        it.notifyDataSetChanged()
+                    }
                 }
-                else -> Toast.makeText(this, "noooo...", Toast.LENGTH_LONG).show()
             }
+            !ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_CONTACTS
+            ) -> {
+                // диалог запроса разрешения
+                AlertDialog.Builder(this).setTitle("Дай доступ")
+                    .setMessage("очень нада")
+                    .setPositiveButton("Дать доступ") { _, _ -> checkPermission() }
+                    .setNegativeButton("Не давать") { dialog, _ -> dialog.dismiss() }
+                    .create()
+                    .show()
+            }
+            else -> Toast.makeText(this, "noooo...", Toast.LENGTH_LONG).show()
         }
+
+    }
 
     private fun checkPermission() {
         permissionResult.launch(Manifest.permission.READ_CONTACTS)
@@ -66,8 +73,6 @@ class ContactsActivity2 : AppCompatActivity() {
     private fun getContacts() {
         //объект через который будем общаться с контент провайдером
         val contentResolver: ContentResolver = contentResolver
-        //TODO какой-то сбой в обращении к Layout
-//        val contactsList = findViewById<TextView>(R.id.contacts_list).apply { text = "" }
         // через него получаем курсор. Курсор нужен для получения данных по объектно и не всех сразу.
         val projection = arrayOf(
             ContactsContract.Contacts._ID,
@@ -95,9 +100,8 @@ class ContactsActivity2 : AppCompatActivity() {
                         val phoneNumber: String = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         val id: String = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID))
                         val name = cursor.getString(columnIndex)
-                        Contact(id, name, phoneNumber)
+                        contact.add(Contact(id, name, phoneNumber))
                         Log.d("!!! ContactsActivity2", " columnIndex  id = $id  name = $name  number = $phoneNumber")
-//                        contactsList.text = "${contactsList.text}$name  $phoneNumber\n"
                     }
                 }
             }

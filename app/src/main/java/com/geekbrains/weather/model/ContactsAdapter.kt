@@ -9,6 +9,9 @@ import com.geekbrains.weather.R
 
 class ContactsAdapter(private var items: List<Contact>) : RecyclerView.Adapter<ContactsAdapter.ContactItemViewHolder>() {
 
+    class ContactItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactItemViewHolder {
         return ContactItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_item_layout, parent, false))
@@ -18,15 +21,11 @@ class ContactsAdapter(private var items: List<Contact>) : RecyclerView.Adapter<C
         val contact = items[position]
 
         holder.itemView.apply {
-            findViewById<TextView>(R.id.id_label).text = contact.id.toString()
+            findViewById<TextView>(R.id.id_label).text = contact.id
             findViewById<TextView>(R.id.name_label).text = contact.name
             findViewById<TextView>(R.id.number_label).text = contact.number
         }
     }
 
     override fun getItemCount(): Int = items.size
-
-    class ContactItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    }
 }
