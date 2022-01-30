@@ -42,10 +42,10 @@ class DetailFragment : Fragment() {
 
     private val listener = Repository.OnLoadListener {
 
-        Log.d(TAG, "!!! RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.city)
-        Log.d(TAG, "!!! RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.condition)
-        Log.d(TAG, "!!! RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.temperature)
-        Log.d(TAG, "!!! RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.feelsLike)
+        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.city)
+        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.condition)
+        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.temperature)
+        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.feelsLike)
 
         RepositoryImpl.getWeatherFromServer()?.let { weather ->
             binding.weatherCondition.text = weather.condition
@@ -65,7 +65,6 @@ class DetailFragment : Fragment() {
                 .build()
                 .enqueue(request)
 
-            // TODO возможно отдельный поток и не нужен
             Thread {
                 viewModel.saveHistory(weather)
             }.start()

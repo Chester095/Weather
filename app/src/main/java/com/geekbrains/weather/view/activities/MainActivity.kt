@@ -34,16 +34,12 @@ class MainActivity : AppCompatActivity() {
         val mSettings: SharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val APP_NIGHTMODE = "NIGHTMODE"
         val editor: SharedPreferences.Editor = mSettings.edit()
-/*        Log.d(TAG,"  APP_NIGHTMODE  " + mSettings.getBoolean(APP_NIGHTMODE,true))
-        editor.putBoolean(APP_NIGHTMODE, false)
-            .apply()*/
 
         Log.d(TAG, "  APP_NIGHTMODE  " + mSettings.getBoolean(APP_NIGHTMODE, true))
 
         if (mSettings.contains(APP_NIGHTMODE)) {
             if (mSettings.getBoolean(APP_NIGHTMODE, true)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
@@ -85,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         } else if (item.itemId == R.id.action_history) {
             startActivity(Intent(this, HistoryActivity::class.java))
             return true
-        } else if (item.itemId == R.id.action_history) {
+        } else if (item.itemId == R.id.action_contacts) {
             startActivity(Intent(this, ContactsActivity::class.java))
             return true
         }
