@@ -7,7 +7,7 @@
     android:layout_margin="1dp"
     android:background="@android:color/background_light"
     android:padding="8dp"
-    tools:context=".view.activities.ContactsActivity2">
+    tools:context=".view.activities.ContactsActivity">
 
     <TextView
         android:id="@+id/id_label"

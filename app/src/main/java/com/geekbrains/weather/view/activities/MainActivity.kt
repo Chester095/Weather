@@ -80,11 +80,8 @@ class MainActivity : AppCompatActivity() {
         } else if (item.itemId == R.id.action_history) {
             startActivity(Intent(this, HistoryActivity::class.java))
             return true
-        } else if (item.itemId == R.id.action_contacts) {
-            startActivity(Intent(this, ContactsActivity::class.java))
-            return true
         } else if (item.itemId == R.id.action_contacts2) {
-            startActivity(Intent(this, ContactsActivity2::class.java))
+            startActivity(Intent(this, ContactsActivity::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)
