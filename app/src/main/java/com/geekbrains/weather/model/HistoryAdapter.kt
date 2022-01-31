@@ -11,7 +11,7 @@ class HistoryAdapter(private var items: List<Weather>) : RecyclerView.Adapter<Hi
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryItemViewHolder {
-        return HistoryItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.history_item_layout, parent, false))
+        return HistoryItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false))
     }
 
     override fun onBindViewHolder(holder: HistoryItemViewHolder, position: Int) {

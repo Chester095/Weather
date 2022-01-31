@@ -17,7 +17,6 @@ class LocalRepositoryImpl(private val dao: HistoryDAO) : LocalRepository {
                     condition = entity.condition
                 )
             }
-        Log.d("LocalRepositoryImpl getAllHistory",  " finish")
     }
 
     override fun saveEntity(weather: Weather) {
