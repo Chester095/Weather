@@ -1,19 +1,16 @@
-package com.geekbrains.weather.view.main
+package com.geekbrains.weather.view.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.geekbrains.weather.R
-import com.geekbrains.weather.databinding.MainFragmentBinding
+import com.geekbrains.weather.databinding.FragmentMainBinding
 import com.geekbrains.weather.model.Weather
-import com.geekbrains.weather.view.details.DetailFragment
-import com.geekbrains.weather.view.hide
-import com.geekbrains.weather.view.show
-import com.geekbrains.weather.view.showSnackBar
+import com.geekbrains.weather.view.*
+import com.geekbrains.weather.view.main.MainAdapter
 import com.geekbrains.weather.viewmodel.AppState
 import com.geekbrains.weather.viewmodel.MainViewModel
 
@@ -21,9 +18,10 @@ class MainFragment : Fragment() {
     // фабричный статический метод
     companion object {
         fun newInstance() = MainFragment()
+        const val TAG = "!!! MainFragment"
     }
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
 
@@ -37,15 +35,17 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, " onViewCreated")
 
         // для работы RecycleView нужен адаптер, RecycleView и layoutManager
-        //TODO 3 урок 01:57:00
         binding.mainRecycleView.adapter = adapter
         binding.mainRecycleView.layoutManager = LinearLayoutManager(requireActivity())
 

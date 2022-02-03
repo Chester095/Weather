@@ -1,5 +1,6 @@
 package com.geekbrains.weather.view.main
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
 
     //когда будет дата передаваться
+    @SuppressLint("NotifyDataSetChanged")
     fun setWeather(data: List<Weather>) {
         weatherData = data
         //чтобы адаптер отобразил данные
@@ -26,7 +28,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.main_item, parent, false) /*as View*/
+                .inflate(R.layout.item_main, parent, false) /*as View*/
         )
     }
 
