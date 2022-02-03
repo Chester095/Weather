@@ -16,8 +16,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val actionBar = supportActionBar
-        actionBar!!.title = "Настройки"
+        supportActionBar?.title = "Настройки"
         Log.d("!!! SettingsActivity", " onCreate")
         val btn = findViewById<SwitchCompat>(R.id.switch_button_dark_theme)
 

@@ -33,7 +33,7 @@ class ContactsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts)
-        supportActionBar!!.title = "Контакты"
+        supportActionBar?.title = "Контакты"
         checkPermission()
     }
 
@@ -91,18 +91,14 @@ class ContactsActivity : AppCompatActivity() {
         Log.d(TAG, " startPhoneDial phoneNo = $phoneNo")
         val callIntent = Intent(Intent.ACTION_CALL)
         //callIntent.data = Uri.parse(phoneNo)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-            callIntent.setPackage("com.android.phone")
-        } else {
-            callIntent.setPackage("com.android.server.telecom")
-        }
+        callIntent.setPackage("com.android.phone")
         callIntent.data = Uri.parse("tel:$phoneNo")
         try {
             startActivity(callIntent)
         } catch (exp: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:${phoneNo}"));
-            startActivity(intent);
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${phoneNo}")
+            startActivity(intent)
 
         }
     }
@@ -149,7 +145,7 @@ class ContactsActivity : AppCompatActivity() {
                     }
                 }
             }
-            cursor?.close()
+            cursor.close()
         }
 
 

@@ -32,7 +32,7 @@ class App : Application() {
         // инициализация БД истории запросов
         fun getHistoryDao(): HistoryDAO {
             if (historyDB == null) {
-                Log.d(TAG, "History.db  db != null")
+                Log.d(TAG, "History.db  db == null")
                 synchronized(HistoryDB::class.java) {
                     if (historyDB == null) {
                         appInstance?.let { app ->

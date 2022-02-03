@@ -1,5 +1,6 @@
 package com.geekbrains.weather.view.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val APP_PREFERENCES = "mysettings"
         val mSettings: SharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val APP_NIGHTMODE = "NIGHTMODE"
-        val editor: SharedPreferences.Editor = mSettings.edit()
+        mSettings.edit()
 
         Log.d(TAG, "  APP_NIGHTMODE  " + mSettings.getBoolean(APP_NIGHTMODE, true))
 
@@ -58,7 +60,6 @@ class MainActivity : AppCompatActivity() {
      * Инфлейтор заходит в notes_list_menu, пройдётся по ней
      * и для каждой создаст пункт меню и добавит в menu
      * @param menu
-     * @param inflater
      * @return
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,6 +83,9 @@ class MainActivity : AppCompatActivity() {
             return true
         } else if (item.itemId == R.id.action_contacts2) {
             startActivity(Intent(this, ContactsActivity::class.java))
+            return true
+        } else if (item.itemId == R.id.action_map) {
+            startActivity(Intent(this, LocationActivity::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)

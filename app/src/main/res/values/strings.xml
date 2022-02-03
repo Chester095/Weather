@@ -27,5 +27,12 @@
     <string name="action_history">История запросов</string>
     <string name="action_contacts">Контакты</string>
     <string name="action_contacts2">Контакты</string>
+    <string name="loading">LOADING…</string>
+    <string name="action_location">Карта</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="google_maps_key">AIzaSyDUGEm85kC7RnWaTCM6Hg86G0i9iHxBkJw</string>
+    <string name="text_view_temperature">Температура</string>
+    <string name="text_view_fills_like">Ощущается</string>
 
 </resources>
