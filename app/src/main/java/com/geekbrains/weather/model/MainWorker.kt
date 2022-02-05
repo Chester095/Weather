@@ -3,7 +3,7 @@ package com.geekbrains.weather.model
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-private const val TAG = "!!! MainWorker "
+const val TAG = "!!! MainWorker "
 
 class MainWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
     // worker в отличии от intentService  умеет возращать результат

@@ -3,8 +3,6 @@ package com.geekbrains.weather.view
 import android.app.Application
 import android.util.Log
 import androidx.room.Room
-import com.geekbrains.weather.model.ContactsDAO
-import com.geekbrains.weather.model.ContactsDB
 import com.geekbrains.weather.model.HistoryDAO
 import com.geekbrains.weather.model.HistoryDB
 
@@ -45,29 +43,7 @@ class App : Application() {
                     }
                 }
             }
-            return historyDB!!.historyDAO()
+            return historyDB?.historyDAO() ?: throw Exception("Что-то пошло не так")
         }
-
-/*        // инициализация БД телефонов
-        fun getContactsDao(): ContactsDAO {
-            if (contactsDB == null) {
-                Log.d(TAG, "History.db  db != null")
-                synchronized(HistoryDB::class.java) {
-                    if (contactsDB == null) {
-                        appInstance?.let { app ->
-                            contactsDB = Room.databaseBuilder(
-                                app.applicationContext,
-                                ContactsDB::class.java,
-                                DB_NAME
-                            ).build()
-                        } ?: throw Exception("Что-то пошло не так")
-                    }
-                }
-            }
-            return contactsDB!!.contactsDAO()
-        }*/
-
     }
-
-
 }
