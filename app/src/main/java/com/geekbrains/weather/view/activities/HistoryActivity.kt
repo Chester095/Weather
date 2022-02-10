@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.geekbrains.weather.R
-import com.geekbrains.weather.model.HistoryAdapter
+import com.geekbrains.weather.model.history.HistoryAdapter
 import com.geekbrains.weather.model.LocalRepositoryImpl
 import com.geekbrains.weather.view.App
 

@@ -4,6 +4,9 @@ import android.app.IntentService
 import android.content.Intent
 import android.util.Log
 import com.geekbrains.weather.R
+import com.geekbrains.weather.model.weather.Weather
+import com.geekbrains.weather.model.weather.WeatherDTO
+import com.geekbrains.weather.model.weather.WeatherLoader
 import com.geekbrains.weather.view.fragments.DetailFragment.Companion.TEST_BROADCAST_INTENT_FILTER
 import com.geekbrains.weather.view.fragments.DetailFragment.Companion.THREADS_FRAGMENT_BROADCAST_EXTRA
 
@@ -22,7 +25,7 @@ class MainIntentService : IntentService("MainIntentService") {
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        Log.d(TAG, "onHandleIntent ^")
+        Log.d(TAG, "onHandleIntent:  intent = $intent")
 
         intent?.let {
             sendBack(it.getIntExtra(MAIN_SERVICE_INT_EXTRA, 0).toString())

@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.weather
 
 import retrofit2.Call
 import retrofit2.http.GET

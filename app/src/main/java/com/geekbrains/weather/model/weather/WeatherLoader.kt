@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.weather
 
 import android.os.Build
 import android.os.Handler
@@ -26,7 +26,7 @@ object WeatherLoader {
         var urlConnection: HttpsURLConnection? = null
 
         //handler в него отправляем команду потоку от куда идёт выполнение
-        val handler = Handler(Looper.getMainLooper())
+        Handler(Looper.getMainLooper())
 
         try {
             val uri = URL("https://api.weather.yandex.ru/v2/informers?Lat=${city.lat}&lon=${city.lon}")
@@ -53,7 +53,7 @@ object WeatherLoader {
             listener.onLoaded(weatherDTO)
         } catch (e: Exception) {
             listener.onFailed(e)
-            Log.e("!!! DEBUGLOG", "FAIL CONNECTION", e)
+            Log.d("!!! DEBUGLOG", "FAIL CONNECTION", e)
         } finally {
             urlConnection?.disconnect()
         }
@@ -61,7 +61,7 @@ object WeatherLoader {
 
 
     // создаём клиента okHttp
-    val client: OkHttpClient = OkHttpClient.Builder()
+    private val client: OkHttpClient = OkHttpClient.Builder()
         .callTimeout(1000, TimeUnit.MILLISECONDS)
         .connectTimeout(1000, TimeUnit.MILLISECONDS)
 
@@ -113,36 +113,6 @@ object WeatherLoader {
                     listener.onFailed(t)
                 }
             })
-    }
-
-    fun loadOkHttp(city: City, listener: OnWeatherLoadListener) {
-        // создаём клиенту запрос, чтобы было потом что спрашивать
-        val request: Request = Request.Builder()
-            .get()
-            .addHeader("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
-            .url("https://api.weather.yandex.ru/v2/informers?Lat=${city.lat}&lon=${city.lon}")
-            .build()
-
-        // у клиента спрашиываем запрос
-        client.newCall(request)
-            // execute - в этом же потоке, enqueue в новом
-            .enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    listener.onFailed(e)
-                    Log.e("!!! DEBUGLOG", "FAIL CONNECTION", e)
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful) {
-                        val weatherDTO = Gson().fromJson(response.body?.string(), WeatherDTO::class.java)
-                        listener.onLoaded(weatherDTO)
-                    } else {
-                        listener.onFailed(Exception(response.body?.string()))
-                        Log.e("!!! DEBUGLOG", "FAIL CONNECTION  $response")
-                    }
-                }
-            })
-
     }
 
     interface OnWeatherLoadListener {

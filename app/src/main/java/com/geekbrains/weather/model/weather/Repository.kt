@@ -1,6 +1,4 @@
-package com.geekbrains.weather.model
-
-// относится к Model так как отвечает за данные (как, что и где)
+package com.geekbrains.weather.model.weather
 
 interface Repository {
     fun getWeatherFromServer(): Weather?

@@ -19,8 +19,10 @@ import com.geekbrains.weather.view.fragments.MainFragment
 
 // относится к View так как отвечает за отображение
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "!!! MainActivity "
+    }
     private val receiver = MainBroadcastReceiver()
-    private val TAG = "!!! MainActivity "
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -29,13 +31,31 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sharedPreferencesStart()
+        setContentView(binding.root)
+        registerReceiverStart()
 
+
+    }
+
+    private fun registerReceiverStart(){
+        // созданый ресивер регистрируем через метод registerReceiver
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_container, MainFragment.newInstance())
+            .commit()
+//        MainWorker.startWorker(this)
+
+    }
+
+
+    @SuppressLint("CommitPrefEdits")
+    private fun sharedPreferencesStart() {
         // подгружаем тему из SharedPreferences
         val APP_PREFERENCES = "mysettings"
         val mSettings: SharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val APP_NIGHTMODE = "NIGHTMODE"
         mSettings.edit()
-
         Log.d(TAG, "  APP_NIGHTMODE  " + mSettings.getBoolean(APP_NIGHTMODE, true))
 
         if (mSettings.contains(APP_NIGHTMODE)) {
@@ -46,13 +66,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setContentView(binding.root)
-        // созданый ресивер регистрируем через метод registerReceiver
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-        supportFragmentManager.beginTransaction()
-            .add(R.id.main_container, MainFragment.newInstance())
-            .commit()
-//        MainWorker.startWorker(this)
     }
 
     /*** Чтобы наш активити узнал о существовании меню.
@@ -68,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+
     /***Реакция на нажатие кнопки меню.
      * У нас есть элемент на который нажали. Проверяем тот ли это элемент.
      * И выполняем openNoteScreen.
@@ -75,22 +89,26 @@ class MainActivity : AppCompatActivity() {
      * @return
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_settings) {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            return true
-        } else if (item.itemId == R.id.action_history) {
-            startActivity(Intent(this, HistoryActivity::class.java))
-            return true
-        } else if (item.itemId == R.id.action_contacts2) {
-            startActivity(Intent(this, ContactsActivity::class.java))
-            return true
-        } else if (item.itemId == R.id.action_map) {
-            startActivity(Intent(this, LocationActivity::class.java))
-            return true
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return true
+            }
+            R.id.action_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+                return true
+            }
+            R.id.action_contacts2 -> {
+                startActivity(Intent(this, ContactsActivity::class.java))
+                return true
+            }
+            R.id.action_map -> {
+                startActivity(Intent(this, LocationActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
-
 
     override fun onDestroy() {
         // снимаем подписку

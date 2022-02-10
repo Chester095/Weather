@@ -19,11 +19,16 @@ import coil.request.ImageRequest
 import com.geekbrains.weather.R
 import com.geekbrains.weather.databinding.FragmentDetailBinding
 import com.geekbrains.weather.model.*
+import com.geekbrains.weather.model.weather.Repository
+import com.geekbrains.weather.model.weather.RepositoryImpl
+import com.geekbrains.weather.model.weather.Weather
 import com.geekbrains.weather.viewmodel.DetailViewModel
 
 class DetailFragment : Fragment() {
     // фабричный статический метод
     companion object {
+        private var _binding: FragmentDetailBinding? = null
+        private val binding get() = _binding!!
         const val TAG = "!!! DetailFragment"
         const val TEST_BROADCAST_INTENT_FILTER = "TEST BROADCAST INTENT FILTER"
         const val THREADS_FRAGMENT_BROADCAST_EXTRA = "THREADS_FRAGMENT_EXTRA"
@@ -39,37 +44,37 @@ class DetailFragment : Fragment() {
         ViewModelProvider(this)[DetailViewModel::class.java]
     }
 
-
     private val listener = Repository.OnLoadListener {
 
-        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.city)
-        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.condition)
-        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.temperature)
-        Log.d(TAG, " RepositoryImpl.getWeatherFromServer()  " + RepositoryImpl.getWeatherFromServer()?.feelsLike)
-
         RepositoryImpl.getWeatherFromServer()?.let { weather ->
-            binding.weatherCondition.text = weather.condition
-            binding.temperatureValue.text = weather.temperature.toString()
-            binding.feelsLikeValue.text = weather.feelsLike.toString()
 
-            Log.d(TAG, "https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
-            val request = ImageRequest.Builder(requireContext())
-                // указываем от куда будем загружать
-                .data("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
-                // и куда
-                .target(binding.weatherImageView)
-                .build()
+            // паршивая заплатка
+            Log.d(TAG, "  binding.weatherCondition.text -" + binding.weatherCondition.text + "-")
+            if (binding.weatherCondition.text == "") {
+                binding.weatherCondition.text = weather.condition
+                binding.temperatureValue.text = weather.temperature.toString()
+                binding.feelsLikeValue.text = weather.feelsLike.toString()
+                Log.d(TAG, "  binding.weatherCondition.text -" + binding.weatherCondition.text + "-")
 
-            ImageLoader.Builder(requireContext())
-                .componentRegistry { add(SvgDecoder(requireContext())) }
-                .build()
-                .enqueue(request)
 
-            Thread {
-                viewModel.saveHistory(weather)
-            }.start()
-            Toast.makeText(context, "Данные подгрузились", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
+                val request = ImageRequest.Builder(requireContext())
+                    // указываем от куда будем загружать
+                    .data("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
+                    // и куда
+                    .target(binding.weatherImageView)
+                    .build()
 
+                ImageLoader.Builder(requireContext())
+                    .componentRegistry { add(SvgDecoder(requireContext())) }
+                    .build()
+                    .enqueue(request)
+
+                Thread {
+                    viewModel.saveHistory(weather)
+                }.start()
+                Toast.makeText(context, "Данные подгрузились", Toast.LENGTH_LONG).show()
+            }
         } ?: Toast.makeText(context, "ОШИБКА DetailFragment: listener", Toast.LENGTH_LONG).show()
     }
 
@@ -77,16 +82,10 @@ class DetailFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             //Достаём данные из интента
             intent.getStringExtra(THREADS_FRAGMENT_BROADCAST_EXTRA)?.let {
-                Log.d(
-                    TAG, "testReceiver:  "
-                            + intent.getStringExtra(THREADS_FRAGMENT_BROADCAST_EXTRA)
-                )
+                Log.d(TAG, "testReceiver:  "+ intent.getStringExtra(THREADS_FRAGMENT_BROADCAST_EXTRA))
             }
         }
     }
-
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,10 +95,7 @@ class DetailFragment : Fragment() {
             MainWorker.startWorker(it)
             LocalBroadcastManager.getInstance(it)
                 .registerReceiver(testReceiver, IntentFilter(TEST_BROADCAST_INTENT_FILTER))
-            Log.d(
-                TAG, "onCreateView:  "
-                        + LocalBroadcastManager.getInstance(it).toString()
-            )
+            Log.d(TAG, "onCreateView:  " + LocalBroadcastManager.getInstance(it).toString())
         }
 
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
@@ -110,6 +106,7 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //подпишемся на репозиторий Listener
+        Log.d(TAG, "onViewCreated:  listener = $listener")
         RepositoryImpl.addLoadedListener(listener)
 
 
@@ -122,16 +119,15 @@ class DetailFragment : Fragment() {
             requireActivity().startService(Intent(requireContext(), MainIntentService::class.java).apply {
                 // кладём туда данные
                 putExtra(getString(R.string.weather_extra), weather)
-
             })
         }
-
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
         // отписываемся от репозиторий Listener
+        Log.d(TAG, "onDestroy:   listener = $listener")
         RepositoryImpl.removeLoadedListener(listener)
         context?.let {
             LocalBroadcastManager.getInstance(it).unregisterReceiver(testReceiver)

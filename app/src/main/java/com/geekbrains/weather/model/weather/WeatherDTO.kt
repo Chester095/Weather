@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.weather
 
 import com.google.gson.annotations.SerializedName
 

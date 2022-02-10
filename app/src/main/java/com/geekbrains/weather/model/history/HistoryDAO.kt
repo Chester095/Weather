@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.history
 
 import androidx.room.*
 

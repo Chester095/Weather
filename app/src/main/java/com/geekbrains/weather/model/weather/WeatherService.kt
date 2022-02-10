@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.weather
 
 import android.app.Service
 import android.content.Intent

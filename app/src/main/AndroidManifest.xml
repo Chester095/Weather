@@ -80,7 +80,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".model.WeatherService" />
+        <service android:name=".model.weather.WeatherService" />
     </application>
 
 </manifest>

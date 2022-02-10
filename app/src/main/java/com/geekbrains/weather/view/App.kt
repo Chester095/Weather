@@ -3,8 +3,8 @@ package com.geekbrains.weather.view
 import android.app.Application
 import android.util.Log
 import androidx.room.Room
-import com.geekbrains.weather.model.HistoryDAO
-import com.geekbrains.weather.model.HistoryDB
+import com.geekbrains.weather.model.history.HistoryDAO
+import com.geekbrains.weather.model.history.HistoryDB
 
 // при создании Application будем создавать нашу БД
 class App : Application() {

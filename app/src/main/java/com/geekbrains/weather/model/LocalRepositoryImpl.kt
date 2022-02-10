@@ -1,7 +1,10 @@
 package com.geekbrains.weather.model
 
 import android.util.Log
-import android.widget.Toast
+import com.geekbrains.weather.model.history.HistoryDAO
+import com.geekbrains.weather.model.history.HistoryEntity
+import com.geekbrains.weather.model.weather.City
+import com.geekbrains.weather.model.weather.Weather
 import java.util.*
 
 class LocalRepositoryImpl(private val dao: HistoryDAO) : LocalRepository {

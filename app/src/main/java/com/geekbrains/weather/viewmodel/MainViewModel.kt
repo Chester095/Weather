@@ -3,8 +3,8 @@ package com.geekbrains.weather.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.geekbrains.weather.model.Repository
-import com.geekbrains.weather.model.RepositoryImpl
+import com.geekbrains.weather.model.weather.Repository
+import com.geekbrains.weather.model.weather.RepositoryImpl
 
 class MainViewModel : ViewModel() {
     // для хранения данных Mutable (то что можно изменить)
@@ -14,9 +14,7 @@ class MainViewModel : ViewModel() {
 
     // будет возвращать данные
     fun getData(): LiveData<AppState> = liveDataToObserve
-
     fun getWeatherFromLocalStorageRus() = getDataFromLocalSource(true)
-    fun getWeatherFromLocalStorageWorld() = getDataFromLocalSource(false)
     fun getWeatherFromRemoteSource() = getDataFromLocalSource(isRussian)
 
     //
@@ -25,16 +23,12 @@ class MainViewModel : ViewModel() {
         liveDataToObserve.value = AppState.Loading
 
         Thread {
-
             val weather = if (isRussian) {
                 repo.getWeatherFromLocalStorageRus()
             } else {
                 repo.getWeatherFromLocalStorageWorld()
             }
-
             liveDataToObserve.postValue(AppState.Success(weather))
         }.start()
     }
-
-
 }

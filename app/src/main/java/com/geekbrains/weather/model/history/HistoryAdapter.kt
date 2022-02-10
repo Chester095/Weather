@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.history
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.geekbrains.weather.R
+import com.geekbrains.weather.model.weather.Weather
 
 class HistoryAdapter(private var items: List<Weather>) : RecyclerView.Adapter<HistoryAdapter.HistoryItemViewHolder>() {
 

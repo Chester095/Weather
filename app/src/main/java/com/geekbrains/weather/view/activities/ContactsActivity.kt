@@ -7,7 +7,6 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -18,8 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.geekbrains.weather.R
-import com.geekbrains.weather.model.Contact
-import com.geekbrains.weather.model.ContactsAdapter
+import com.geekbrains.weather.model.contacts.Contact
+import com.geekbrains.weather.model.contacts.ContactsAdapter
 
 
 class ContactsActivity : AppCompatActivity() {

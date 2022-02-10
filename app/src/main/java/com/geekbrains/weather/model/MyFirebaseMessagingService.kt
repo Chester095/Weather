@@ -4,21 +4,19 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.provider.Settings.Global.getString
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.geekbrains.weather.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 
-const val CHANNEL_ID = "Default"
-const val NOTIFICATION_ID = 40
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-    val TAG = "!!! MyFirebaseMessagingService"
-
+    companion object {
+        const val TAG = "!!! MyFirebaseMessagingService"
+        const val CHANNEL_ID = "Default"
+        const val NOTIFICATION_ID = 40
+    }
 
     // сюда будут приходить сообщения
     override fun onMessageReceived(RemoteMessage: RemoteMessage) {
@@ -51,7 +49,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         // передаём
-        notificationManager.notify(40, notificationBuilder.build())
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
     override fun onNewToken(token: String) {

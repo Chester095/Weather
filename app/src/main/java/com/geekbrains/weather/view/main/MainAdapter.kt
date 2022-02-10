@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.geekbrains.weather.R
-import com.geekbrains.weather.model.Weather
+import com.geekbrains.weather.model.weather.Weather
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 

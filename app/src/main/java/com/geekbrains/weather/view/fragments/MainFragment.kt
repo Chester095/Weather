@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.geekbrains.weather.R
 import com.geekbrains.weather.databinding.FragmentMainBinding
-import com.geekbrains.weather.model.Weather
+import com.geekbrains.weather.model.weather.Weather
 import com.geekbrains.weather.view.*
 import com.geekbrains.weather.view.main.MainAdapter
 import com.geekbrains.weather.viewmodel.AppState

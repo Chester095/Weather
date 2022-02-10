@@ -1,4 +1,4 @@
-package com.geekbrains.weather.model
+package com.geekbrains.weather.model.contacts
 
 import android.util.Log
 import android.view.LayoutInflater
