@@ -32,7 +32,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="BuildConfig.MAPS_API_KEY" />
 
         <meta-data
             android:name="com.google.android.gms.version"
